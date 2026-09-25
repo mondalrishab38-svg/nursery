@@ -1950,3 +1950,139 @@ function applyFilters(){
 
 
 /*
+=========================
+   CATALOGUE
+========================= */
+
+let catalogueRoses = [];
+let catalogueIndex = 0;
+
+
+function openCatalogueMode(){
+
+    catalogueRoses =
+        [...document.querySelectorAll(".rose")]
+        .filter(rose =>
+            rose.style.display !== "none"
+        );
+
+    if(catalogueRoses.length === 0){
+        return;
+    }
+
+    catalogueIndex = 0;
+
+    showCatalogueRose();
+
+    document.getElementById("catalogue").style.display = "flex";
+
+}
+
+
+function showCatalogueRose(){
+
+    const rose =
+        catalogueRoses[catalogueIndex];
+
+    const image =
+        rose.querySelector("img");
+
+    const name =
+        rose.querySelector("h2").innerText;
+
+    const price =
+        rose.querySelector("p").innerText;
+
+    document.getElementById("catImage").src =
+        image.src;
+
+    document.getElementById("catImage").alt =
+        name;
+
+    document.getElementById("catName").innerText =
+        name;
+
+    document.getElementById("catPrice").innerText =
+        price;
+
+}
+
+
+function nextRose(){
+
+    catalogueIndex++;
+
+    if(catalogueIndex >= catalogueRoses.length){
+        catalogueIndex = 0;
+    }
+
+    showCatalogueRose();
+
+}
+
+
+function previousRose(){
+
+    catalogueIndex--;
+
+    if(catalogueIndex < 0){
+        catalogueIndex = catalogueRoses.length - 1;
+    }
+
+    showCatalogueRose();
+
+}
+
+
+function closeCatalogue(){
+
+    document.getElementById("catalogue").style.display =
+        "none";
+
+}
+
+
+/* =========================
+   FALLING PETALS
+========================= */
+
+function createPetal(){
+
+    const petal =
+        document.createElement("div");
+
+    petal.className = "petal";
+
+    const petals = ["🌹","🌸","🍃"];
+
+    petal.innerText =
+        petals[Math.floor(Math.random()*petals.length)];
+
+    petal.style.left =
+        Math.random()*100 + "vw";
+
+    petal.style.fontSize =
+        (12 + Math.random()*12) + "px";
+
+    petal.style.animationDuration =
+        (6 + Math.random()*6) + "s";
+
+    document.body.appendChild(petal);
+
+    setTimeout(()=>{
+        petal.remove();
+    },12000);
+
+}
+
+setInterval(createPetal,1800);
+
+
+/* INITIAL FILTER */
+
+applyFilters();
+
+</script>
+
+</body>
+</html>
