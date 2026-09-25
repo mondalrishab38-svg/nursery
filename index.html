@@ -1,1 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>RANJIT NURSERY | Rose Collection</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#fffaf8;
+    color:#332c2b;
+    transition:.3s;
+}
+
+/* NAVBAR */
+.navbar{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    background:rgba(255,250,248,.96);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid #eaded9;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 5%;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:800;
+    color:#7d3040;
+    letter-spacing:.5px;
+}
+
+.nav-links{
+    display:flex;
+    gap:18px;
+    align-items:center;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:#4b4140;
+    font-weight:600;
+    font-size:14px;
+}
+
+.nav-btn{
+    border:0;
+    background:#7d3040;
+    color:white;
+    padding:9px 13px;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+/* TOP IMAGE */
+.top-image{
+    width:100%;
+    height:270px;
+    overflow:hidden;
+    position:relative;
+    background:#ead9d5;
+}
+
+.top-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+    display:block;
+}
+
+.top-overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        to bottom,
+        rgba(0,0,0,.05),
+        rgba(0,0,0,.45)
+    );
+    display:flex;
+    align-items:flex-end;
+    padding:30px 6%;
+}
+
+.top-title{
+    color:white;
+    font-size:clamp(30px,6vw,52px);
+    font-weight:800;
+    text-shadow:0 2px 12px rgba(0,0,0,.5);
+}
+
+/* INTRO */
+.intro{
+    text-align:center;
+    max-width:850px;
+    margin:28px auto 20px;
+    padding:0 18px;
+}
+
+.intro h1{
+    font-size:clamp(25px,5vw,38px);
+    color:#702d3b;
+    margin-bottom:8px;
+}
+
+.intro p{
+    line-height:1.6;
+    color:#665b58;
+}
+
+/* INFO BOXES */
+.info-section{
+    max-width:1150px;
+    margin:25px auto 35px;
+    padding:0 18px;
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+}
+
+.info-box{
+    background:white;
+    border:1px solid #eaded9;
+    border-radius:18px;
+    padding:20px 15px;
+    text-align:center;
+    box-shadow:0 5px 20px rgba(72,40,35,.06);
+}
+
+.info-icon{
+    font-size:25px;
+    margin-bottom:8px;
+}
+
+.info-box h3{
+    color:#7d3040;
+    font-size:16px;
+    margin-bottom:5px;
+}
+
+.info-box p{
+    color:#6b615e;
+    font-size:14px;
+    line-height:1.45;
+}
+
+/* CONTROLS */
+.controls{
+    max-width:1150px;
+    margin:auto;
+    padding:0 18px 25px;
+}
+
+.search-box{
+    width:100%;
+    padding:14px 18px;
+    border:1px solid #decfca;
+    border-radius:30px;
+    font-size:16px;
+    outline:none;
+    background:white;
+    color:#332c2b;
+    margin-bottom:15px;
+}
+
+.search-box:focus{
+    border-color:#9a5361;
+}
+
+.filters{
+    display:flex;
+    flex-wrap:wrap;
+    gap:9px;
+    align-items:center;
+}
+
+.filter-btn{
+    border:1px solid #d8c5c0;
+    background:white;
+    color:#604e4a;
+    padding:9px 15px;
+    border-radius:22px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.filter-btn.active,
+.filter-btn:hover{
+    background:#7d3040;
+    color:white;
+    border-color:#7d3040;
+}
+
+.price-select{
+    border:1px solid #d8c5c0;
+    background:white;
+    padding:9px 13px;
+    border-radius:22px;
+    color:#604e4a;
+}
+
+/* CATEGORY */
+.category-section{
+    max-width:1150px;
+    margin:20px auto 45px;
+    padding:0 18px;
+}
+
+.category-title{
+    font-size:25px;
+    color:#702d3b;
+    margin:28px 0 15px;
+    border-left:5px solid #9d5a68;
+    padding-left:12px;
+}
+
+/* ROSE GRID */
+.rose-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+}
+
+/* ROSE CARD */
+.rose{
+    background:#ffffff;
+    border:1px solid #eaded9;
+    border-radius:20px;
+    padding:13px;
+    position:relative;
+    box-shadow:0 7px 24px rgba(62,35,30,.07);
+    transition:transform .2s,box-shadow .2s;
+    overflow:hidden;
+}
+
+.rose:hover{
+    transform:translateY(-4px);
+    box-shadow:0 12px 30px rgba(62,35,30,.13);
+}
+
+.rose img{
+    width:100%;
+    aspect-ratio:1/1;
+    object-fit:cover;
+    border-radius:50%;
+    display:block;
+    border:4px solid #f3e4e0;
+    margin-bottom:12px;
+}
+
+/*
+ IMPORTANT:
+ The rose name is deliberately forced visible.
+ This prevents the previous CSS problem where h2
+ was hidden/covered.
+*/
+.rose h2{
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    position:static !important;
+    color:#302625 !important;
+    background:transparent !important;
+    font-size:18px;
+    line-height:1.25;
+    min-height:45px;
+    margin:4px 0 8px;
+    padding:0;
+}
+
+.rose p{
+    display:block;
+    color:#5e5350;
+    font-size:14px;
+    margin:5px 0;
+}
+
+.rose p b{
+    color:#3e3431;
+}
+
+.add-rose{
+    position:absolute;
+    top:14px;
+    right:14px;
+    width:38px;
+    height:38px;
+    border:none;
+    border-radius:50%;
+    background:white;
+    color:#7d3040;
+    font-size:25px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 3px 12px rgba(0,0,0,.15);
+}
+
+.add-rose.added{
+    background:#7d3040;
+    color:white;
+}
+
+.unavailable{
+    color:#9a3333 !important;
+}
+
+/* WHATSAPP */
+.whatsapp-bar{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:18px;
+    z-index:999;
+    display:none;
+}
+
+.whatsapp-bar button{
+    border:none;
+    background:#218c54;
+    color:white;
+    padding:13px 20px;
+    border-radius:30px;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 7px 22px rgba(0,0,0,.25);
+}
+
+/* FLOATING WHATSAPP */
+.float-wa{
+    position:fixed;
+    right:18px;
+    bottom:18px;
+    width:54px;
+    height:54px;
+    border-radius:50%;
+    background:#218c54;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    font-size:25px;
+    z-index:998;
+    box-shadow:0 6px 20px rgba(0,0,0,.2);
+}
+
+/* FOOTER */
+footer{
+    background:#342b2a;
+    color:#eee;
+    padding:35px 20px;
+    margin-top:50px;
+}
+
+.footer-content{
+    max-width:1100px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:25px;
+}
+
+footer h3{
+    color:white;
+    margin-bottom:10px;
+}
+
+footer p,
+footer a{
+    color:#d6cecb;
+    font-size:14px;
+    line-height:1.7;
+    text-decoration:none;
+}
+
+.copyright{
+    max-width:1100px;
+    margin:25px auto 0;
+    padding-top:18px;
+    border-top:1px solid #554b48;
+    text-align:center;
+    color:#aaa;
+    font-size:13px;
+}
+
+/* CATALOGUE MODAL */
+.catalogue{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.85);
+    z-index:2000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.catalogue-box{
+    width:min(700px,95%);
+    background:white;
+    border-radius:20px;
+    padding:20px;
+    text-align:center;
+    position:relative;
+}
+
+.catalogue-box img{
+    width:min(500px,100%);
+    max-height:65vh;
+    object-fit:contain;
+    border-radius:18px;
+}
+
+.catalogue-box h2{
+    color:#702d3b;
+    margin:12px 0;
+}
+
+.close-cat{
+    position:absolute;
+    top:10px;
+    right:15px;
+    border:none;
+    background:#7d3040;
+    color:white;
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:20px;
+}
+
+.cat-controls button{
+    border:none;
+    background:#7d3040;
+    color:white;
+    padding:10px 18px;
+    border-radius:20px;
+    margin:5px;
+    cursor:pointer;
+}
+
+/* DARK MODE */
+body.dark{
+    background:#181515;
+    color:#eee;
+}
+
+body.dark .navbar{
+    background:rgba(24,21,21,.96);
+    border-color:#38302e;
+}
+
+body.dark .nav-links a{
+    color:#ddd;
+}
+
+body.dark .intro p,
+body.dark .info-box p{
+    color:#c9c0bd;
+}
+
+body.dark .info-box,
+body.dark .rose,
+body.dark .search-box,
+body.dark .filter-btn,
+body.dark .price-select{
+    background:#241f1e;
+    border-color:#403634;
+    color:#eee;
+}
+
+body.dark .rose h2{
+    color:#fff !important;
+}
+
+body.dark .rose p,
+body.dark .rose p b{
+    color:#d5ccca;
+}
+
+body.dark .filter-btn{
+    color:#ddd;
+}
+
+body.dark .filter-btn.active,
+body.dark .filter-btn:hover{
+    background:#9a5361;
+    color:white;
+}
+
+body.dark .add-rose{
+    background:#332b29;
+    color:#f1a8b5;
+}
+
+body.dark .add-rose.added{
+    background:#9a5361;
+    color:white;
+}
+
+body.dark .catalogue-box{
+    background:#241f1e;
+}
+
+body.dark .category-title,
+body.dark .intro h1,
+body.dark .catalogue-box h2{
+    color:#e8a7b3;
+}
+
+/* PETALS */
+.petal{
+    position:fixed;
+    top:-30px;
+    pointer-events:none;
+    z-index:1500;
+    animation:fall linear forwards;
+    opacity:.65;
+}
+
+@keyframes fall{
+    to{
+        transform:translateY(110vh) rotate(360deg);
+        opacity:0;
+    }
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .rose-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .info-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .footer-content{
+        grid-template-columns:1fr 1fr;
+    }
+}
+
+@media(max-width:600px){
+    .navbar{
+        padding:11px 14px;
+    }
+
+    .logo{
+        font-size:18px;
+    }
+
+    .nav-links{
+        gap:8px;
+    }
+
+    .nav-links a{
+        display:none;
+    }
+
+    .top-image{
+        height:210px;
+    }
+
+    .top-title{
+        font-size:31px;
+    }
+
+    .rose-grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:11px;
+    }
+
+    .rose{
+        padding:9px;
+        border-radius:16px;
+    }
+
+    .rose h2{
+        font-size:15px;
+        min-height:38px;
+    }
+
+    .rose p{
+        font-size:12px;
+    }
+
+    .add-rose{
+        width:32px;
+        height:32px;
+        font-size:21px;
+        top:10px;
+        right:10px;
+    }
+
+    .info-grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:9px;
+    }
+
+    .info-box{
+        padding:15px 8px;
+    }
+
+    .info-box h3{
+        font-size:14px;
+    }
+
+    .info-box p{
+        font-size:12px;
+    }
+
+    .footer-content{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:350px){
+    .rose-grid{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="logo">🌹 RANJIT NURSERY</div>
+
+    <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#roses">Roses</a>
+        <a href="#contact">Contact</a>
+        <button class="nav-btn" onclick="darkMode()">☾</button>
+    </div>
+</nav>
+
+
+<!-- TOP ROSE IMAGE -->
+<section id="home" class="top-image">
+
+    <!-- Replace this with any rose image you already have -->
+    <img src="images/Solare.jpg" alt="Ranjit Nursery Rose">
+
+    <div class="top-overlay">
+        <div class="top-title">RANJIT NURSERY</div>
+    </div>
+
+</section>
+
+
+<!-- INTRO -->
+<section class="intro">
+
+    <h1>Beautiful Roses for Your Garden</h1>
+
+    <p>
+        Welcome to Ranjit Nursery, a rose-focused nursery offering
+        a wide collection of beautiful rose varieties for homes,
+        gardens and rose lovers.
+    </p>
+
+</section>
+
+
+<!-- INFORMATION -->
+<section class="info-section">
+
+    <div class="info-grid">
+
+        <div class="info-box">
+            <div class="info-icon">🌹</div>
+            <h3>500+ Types</h3>
+            <p>More than 500 rose varieties in our nursery collection.</p>
+        </div>
+
+        <div class="info-box">
+            <div class="info-icon">🕐</div>
+            <h3>Opening Time</h3>
+            <p>7:00 AM – 6:00 PM</p>
+        </div>
+
+        <div class="info-box">
+            <div class="info-icon">📍</div>
+            <h3>Location</h3>
+            <p>West Bengal, India</p>
+        </div>
+
+        <div class="info-box">
+            <div class="info-icon">🌿</div>
+            <h3>Speciality</h3>
+            <p>We focus especially on roses.</p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CONTROLS -->
+<section class="controls">
+
+    <input
+        id="search"
+        class="search-box"
+        type="text"
+        placeholder="Search a rose..."
+        oninput="searchRose()"
+    >
+
+    <div class="filters">
+
+        <button class="filter-btn active" onclick="filterCategory('all',this)">
+            All
+        </button>
+
+        <button class="filter-btn" onclick="filterCategory('dutch',this)">
+            Dutch
+        </button>
+
+        <button class="filter-btn" onclick="filterCategory('da',this)">
+            D.A
+        </button>
+
+        <button class="filter-btn" onclick="filterCategory('fragrant',this)">
+            Fragrant Rose
+        </button>
+
+        <button class="filter-btn" onclick="filterCategory('ht',this)">
+            HT All Type
+        </button>
+
+        <select id="priceFilter" class="price-select" onchange="applyFilters()">
+            <option value="all">All Prices</option>
+            <option value="100">₹100 – ₹199</option>
+            <option value="200">₹200 – ₹299</option>
+            <option value="300">₹300 – ₹499</option>
+            <option value="500">₹500+</option>
+        </select>
+
+        <button class="filter-btn" onclick="openCatalogueMode()">
+            Catalogue
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ROSES -->
+<main id="roses" class="category-section">
+
+
+<!-- ================= DUTCH ================= -->
+
+<section class="rose-category" data-category="dutch">
+
+<h2 class="category-title">Dutch Roses</h2>
+
+<div class="rose-grid">
+
+
+<div class="rose">
+    <img src="images/Solare.jpg" alt="solare">
+    <h2>solare</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹150</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Topaz.jpg" alt="Topaz">
+    <h2>Topaz</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹150</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/white avalanche.jpg" alt="white avalanche">
+    <h2>white avalanche</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹120</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Peach Avalanche.jpg" alt="Peach Avalanche">
+    <h2>Peach Avalanche</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹150</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Sweet Avalanche.jpg" alt="Sweet Avalanche">
+    <h2>Sweet Avalanche</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹150</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Candy Avalanche.jpg" alt="Candy Avalanche">
+    <h2>Candy Avalanche</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹400</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Revival.jpg" alt="Revival">
+    <h2>Revival</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹150</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Revera.jpg" alt="Revera">
+    <h2>Revera</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹150</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Top Secret.jpg" alt="Top Secret">
+    <h2>Top Secret</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹150</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Rock Star.jpg" alt="Rock Star">
+    <h2>Rock Star</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹120</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Naranga.jpg" alt="Naranga">
+    <h2>Naranga</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹120</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Cool Water.jpg" alt="Cool Water">
+    <h2>Cool Water</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹400</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Sovereign.jpg" alt="Sovereign">
+    <h2>Sovereign</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹150</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Sweet Dolomite.jpg" alt="Sweet Dolomite">
+    <h2>Sweet Dolomite</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹200</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Toffee.jpg" alt="Toffee">
+    <h2>Toffee</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹500</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Menta.jpg" alt="Menta">
+    <h2>Menta</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹600</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Barista.jpg" alt="Barista">
+    <h2>Barista</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹800</p>
+    <p class="unavailable"><b>Status:</b> Unavailable</p>
+</div>
+
+<div class="rose">
+    <img src="images/Rodos Red.jpg" alt="Rodos Red">
+    <h2>Rodos Red</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹150</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Mascara.jpg" alt="Mascara">
+    <h2>Mascara</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹120</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Red Dutch.jpg" alt="Red Dutch">
+    <h2>Red Dutch</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹150</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Jumilia.jpg" alt="Jumilia">
+    <h2>Jumilia</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹150</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Blush.jpg" alt="Blush">
+    <h2>Blush</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹150</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Wonderland.jpg" alt="Wonderland">
+    <h2>Wonderland</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹150</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Mahiraj.jpg" alt="Mahiraj">
+    <h2>Mahiraj</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹150</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Mohana.jpg" alt="Mohana">
+    <h2>Mohana</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹150</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Corvette.jpg" alt="Corvette">
+    <h2>Corvette</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹300</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/High and Magic.jpg" alt="High and Magic">
+    <h2>High and Magic</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹150</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/Gold Stick.jpg" alt="Gold Stick">
+    <h2>Gold Stick</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Price:</b> ₹150</p>
+    <p><b>Status:</b> Available</p>
+</div>
+
+<div class="rose">
+    <img src="images/La Parla.jpg" alt="La Parla">
+    <h2>La Parla</h2>
+    <button class="add-rose" onclick="addRose(this)">+</button>
+    <p><b>Pri
