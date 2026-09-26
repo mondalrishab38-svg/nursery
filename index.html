@@ -830,7 +830,326 @@ body.dark .catalogue-box h2{
 }
 </style>
 </head>
-<script>/* ============================= */
+<script>
+	
+	/* =========================================
+   ROSE FAVOURITES + SHOPPING CART
+   ========================================= */
+
+let selectedRoses = JSON.parse(
+    localStorage.getItem("selectedRoses") || "[]"
+);
+
+
+/* SAVE CART */
+
+function saveSelectedRoses(){
+
+    localStorage.setItem(
+        "selectedRoses",
+        JSON.stringify(selectedRoses)
+    );
+
+}
+
+
+/* ADD ROSE */
+
+function addRose(button){
+
+    const card = button.closest(".rose");
+
+    const name =
+        card.querySelector("h2").innerText.trim();
+
+    const priceText =
+        card.querySelector("p").innerText;
+
+    const price =
+        parseInt(priceText.replace(/\D/g,"")) || 0;
+
+    const existing =
+        selectedRoses.find(rose => rose.name === name);
+
+    if(existing){
+
+        selectedRoses =
+            selectedRoses.filter(rose => rose.name !== name);
+
+        button.innerText = "+";
+        button.classList.remove("added");
+
+    }else{
+
+        selectedRoses.push({
+            name:name,
+            price:price,
+            quantity:1
+        });
+
+        button.innerText = "✓";
+        button.classList.add("added");
+
+    }
+
+    saveSelectedRoses();
+    updateCart();
+
+}
+
+
+/* CHANGE QUANTITY */
+
+function changeQuantity(name, amount){
+
+    const rose =
+        selectedRoses.find(item => item.name === name);
+
+    if(!rose) return;
+
+    rose.quantity += amount;
+
+    if(rose.quantity <= 0){
+
+        selectedRoses =
+            selectedRoses.filter(
+                item => item.name !== name
+            );
+
+        updateRoseButtons();
+
+    }
+
+    saveSelectedRoses();
+    updateCart();
+
+}
+
+
+/* TOTAL BILL */
+
+function getTotalBill(){
+
+    return selectedRoses.reduce(
+        (total, rose) =>
+            total + (rose.price * rose.quantity),
+        0
+    );
+
+}
+
+
+/* UPDATE SHOPPING LIST */
+
+function updateCart(){
+
+    const cart =
+        document.getElementById("shoppingCart");
+
+    if(!cart) return;
+
+    if(selectedRoses.length === 0){
+
+        cart.innerHTML = `
+            <div class="empty-cart">
+                🌹 No roses selected
+            </div>
+        `;
+
+        return;
+    }
+
+
+    let html = `
+        <h3>🛒 Your Selected Roses</h3>
+    `;
+
+
+    selectedRoses.forEach(rose => {
+
+        const subtotal =
+            rose.price * rose.quantity;
+
+        html += `
+
+        <div class="cart-item">
+
+            <div class="cart-name">
+
+                <strong>${rose.name}</strong>
+
+                <small>
+                    ₹${rose.price} each
+                </small>
+
+            </div>
+
+            <div class="quantity">
+
+                <button
+                    onclick="changeQuantity('${rose.name.replace(/'/g,"\\'")}',-1)">
+                    −
+                </button>
+
+                <span>${rose.quantity}</span>
+
+                <button
+                    onclick="changeQuantity('${rose.name.replace(/'/g,"\\'")}',1)">
+                    +
+                </button>
+
+            </div>
+
+            <div class="subtotal">
+                ₹${subtotal}
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+
+    html += `
+
+        <div class="cart-total">
+            💰 Total: ₹${getTotalBill()}
+        </div>
+
+        <button
+            class="clear-cart"
+            onclick="clearCart()">
+            🧹 Clear Selection
+        </button>
+
+        <button
+            class="whatsapp-order"
+            onclick="sendRosesToWhatsApp()">
+            📲 Send Order on WhatsApp
+        </button>
+
+    `;
+
+
+    cart.innerHTML = html;
+
+}
+
+
+/* CLEAR CART */
+
+function clearCart(){
+
+    selectedRoses = [];
+
+    saveSelectedRoses();
+
+    updateRoseButtons();
+    updateCart();
+
+}
+
+
+/* UPDATE + / ✓ BUTTONS AFTER PAGE RELOAD */
+
+function updateRoseButtons(){
+
+    document.querySelectorAll(".rose").forEach(card => {
+
+        const name =
+            card.querySelector("h2").innerText.trim();
+
+        const button =
+            card.querySelector(".add-rose");
+
+        if(!button) return;
+
+        const selected =
+            selectedRoses.some(
+                rose => rose.name === name
+            );
+
+        if(selected){
+
+            button.innerText = "✓";
+            button.classList.add("added");
+
+        }else{
+
+            button.innerText = "+";
+            button.classList.remove("added");
+
+        }
+
+    });
+
+}
+
+
+/* SEND FULL BILL TO WHATSAPP */
+
+function sendRosesToWhatsApp(){
+
+    if(selectedRoses.length === 0){
+
+        alert("Please select at least one rose.");
+
+        return;
+
+    }
+
+
+    let message =
+        "🌹 RANJIT NURSERY ORDER\n\n";
+
+
+    selectedRoses.forEach((rose,index) => {
+
+        const subtotal =
+            rose.price * rose.quantity;
+
+        message +=
+            `${index + 1}. ${rose.name}\n` +
+            `Quantity: ${rose.quantity}\n` +
+            `Price: ₹${rose.price} each\n` +
+            `Subtotal: ₹${subtotal}\n\n`;
+
+    });
+
+
+    message +=
+        "----------------------\n" +
+        `💰 TOTAL: ₹${getTotalBill()}\n` +
+        "----------------------\n\n" +
+        "Please confirm availability and order details.";
+
+
+    const phone =
+        "919836160317";
+
+
+    const url =
+        "https://wa.me/" +
+        phone +
+        "?text=" +
+        encodeURIComponent(message);
+
+
+    window.open(url,"_blank");
+
+}
+
+
+/* RESTORE EVERYTHING WHEN PAGE OPENS */
+
+window.addEventListener("load",function(){
+
+    updateRoseButtons();
+    updateCart();
+
+});
+	/* ============================= */
 /* EXTRA NURSERY FEATURES */
 /* ============================= */
 
