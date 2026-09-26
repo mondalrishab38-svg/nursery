@@ -7,6 +7,159 @@
 <title>RANJIT NURSERY | Rose Collection</title>
 
 <style>
+
+	/* ============================= */
+/* EXTRA NURSERY FEATURES */
+/* ============================= */
+
+.extra-tools{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:20px 0;
+}
+
+.extra-tools button,
+.extra-tools a{
+    border:none;
+    padding:13px 16px;
+    border-radius:12px;
+    background:#302625;
+    color:white;
+    text-decoration:none;
+    font-size:15px;
+    cursor:pointer;
+}
+
+.extra-tools button:hover,
+.extra-tools a:hover{
+    opacity:.85;
+}
+
+.rose-count{
+    font-size:18px;
+    font-weight:bold;
+    margin:15px 0;
+}
+
+.no-rose{
+    display:none;
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+    padding:40px 10px;
+}
+
+/* IMAGE VIEWER */
+
+.image-viewer{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.92);
+    z-index:9999;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    padding:20px;
+}
+
+.image-viewer.show{
+    display:flex;
+}
+
+.image-viewer img{
+    max-width:95%;
+    max-height:75vh;
+    object-fit:contain;
+    border-radius:15px;
+}
+
+.image-viewer h2{
+    color:white;
+    font-size:24px;
+    text-align:center;
+    margin-top:15px;
+}
+
+.close-viewer{
+    position:absolute;
+    top:15px;
+    right:20px;
+    width:45px;
+    height:45px;
+    border:none;
+    border-radius:50%;
+    background:white;
+    color:#222;
+    font-size:30px;
+    cursor:pointer;
+}
+
+/* BACK TO TOP */
+
+#backTop{
+    position:fixed;
+    right:18px;
+    bottom:85px;
+    width:50px;
+    height:50px;
+    border:none;
+    border-radius:50%;
+    background:#302625;
+    color:white;
+    font-size:25px;
+    cursor:pointer;
+    display:none;
+    z-index:5000;
+}
+
+/* SENIOR FRIENDLY MODE */
+
+body.senior-mode{
+    font-size:20px;
+}
+
+body.senior-mode .rose h2{
+    font-size:28px !important;
+}
+
+body.senior-mode .rose p{
+    font-size:21px !important;
+}
+
+body.senior-mode button,
+body.senior-mode a{
+    font-size:19px !important;
+}
+
+body.senior-mode .rose img{
+    height:330px !important;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    .extra-tools{
+        flex-direction:column;
+    }
+
+    .extra-tools button,
+    .extra-tools a{
+        width:100%;
+        text-align:center;
+        box-sizing:border-box;
+    }
+
+    .rose img{
+        height:260px;
+    }
+
+    body.senior-mode .rose img{
+        height:300px !important;
+    }
+}
 *{
     box-sizing:border-box;
     margin:0;
@@ -752,6 +905,65 @@ body.dark .catalogue-box h2{
     </div>
 
 </section>
+
+	<!-- EXTRA NURSERY FEATURES -->
+
+<div class="extra-tools">
+
+    <button onclick="toggleSeniorMode()" id="seniorBtn">
+        👓 Easy Reading
+    </button>
+
+    <button onclick="sortRoses('low')">
+        ₹ Low → High
+    </button>
+
+    <button onclick="sortRoses('high')">
+        ₹ High → Low
+    </button>
+
+    <a href="tel:9836150317">
+        📞 Call Nursery
+    </a>
+
+    <a href="https://maps.app.goo.gl/B8eGcS18QdsDarE48?g_st=ac"
+       target="_blank">
+        📍 Google Maps
+    </a>
+
+</div>
+
+<div id="roseCount" class="rose-count">
+    🌹 Loading roses...
+</div>
+
+<div id="noRoseFound" class="no-rose">
+    🌹 No rose found
+</div>
+
+<!-- FULL SCREEN IMAGE VIEWER -->
+
+<div id="imageViewer" class="image-viewer" onclick="closeImageViewer()">
+
+    <button class="close-viewer"
+            onclick="closeImageViewer(); event.stopPropagation();">
+        ×
+    </button>
+
+    <img id="viewerImage"
+         src=""
+         alt="Rose"
+         onclick="event.stopPropagation();">
+
+    <h2 id="viewerName"></h2>
+
+</div>
+
+<!-- BACK TO TOP -->
+
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    ↑
+</button>
 
 
 <!-- CONTROLS -->
