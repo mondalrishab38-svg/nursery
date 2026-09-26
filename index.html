@@ -830,7 +830,197 @@ body.dark .catalogue-box h2{
 }
 </style>
 </head>
+<script>/* ============================= */
+/* EXTRA NURSERY FEATURES */
+/* ============================= */
 
+
+/* ROSE COUNT */
+
+function updateRoseCount(){
+
+    const roses = document.querySelectorAll(".rose");
+    let visible = 0;
+
+    roses.forEach(rose => {
+
+        if(rose.style.display !== "none"){
+            visible++;
+        }
+
+    });
+
+    const count = document.getElementById("roseCount");
+
+    if(count){
+        count.innerHTML = "🌹 " + visible + " rose" +
+            (visible === 1 ? "" : "s") + " showing";
+    }
+
+    const noRose = document.getElementById("noRoseFound");
+
+    if(noRose){
+
+        if(visible === 0){
+            noRose.style.display = "block";
+        }else{
+            noRose.style.display = "none";
+        }
+
+    }
+
+}
+
+
+/* IMAGE FULL SCREEN */
+
+document.querySelectorAll(".rose img").forEach(img => {
+
+    img.style.cursor = "zoom-in";
+
+    img.addEventListener("click", function(){
+
+        const viewer =
+            document.getElementById("imageViewer");
+
+        const viewerImage =
+            document.getElementById("viewerImage");
+
+        const viewerName =
+            document.getElementById("viewerName");
+
+        viewerImage.src = this.src;
+
+        viewerImage.alt = this.alt;
+
+        viewerName.textContent = this.alt;
+
+        viewer.classList.add("show");
+
+    });
+
+});
+
+
+function closeImageViewer(){
+
+    document
+        .getElementById("imageViewer")
+        .classList.remove("show");
+
+}
+
+
+/* SENIOR / EASY READING MODE */
+
+function toggleSeniorMode(){
+
+    document.body.classList.toggle("senior-mode");
+
+    const enabled =
+        document.body.classList.contains("senior-mode");
+
+    localStorage.setItem(
+        "seniorMode",
+        enabled ? "on" : "off"
+    );
+
+    const btn =
+        document.getElementById("seniorBtn");
+
+    if(btn){
+
+        btn.innerHTML =
+            enabled
+            ? "🔤 Normal Reading"
+            : "👓 Easy Reading";
+
+    }
+
+}
+
+
+/* REMEMBER EASY READING MODE */
+
+if(localStorage.getItem("seniorMode") === "on"){
+
+    document.body.classList.add("senior-mode");
+
+    const btn =
+        document.getElementById("seniorBtn");
+
+    if(btn){
+        btn.innerHTML = "🔤 Normal Reading";
+    }
+
+}
+
+
+/* SORT BY PRICE */
+
+function sortRoses(order){
+
+    const grids =
+        document.querySelectorAll(".rose-grid");
+
+    grids.forEach(grid => {
+
+        const roses =
+            Array.from(grid.querySelectorAll(".rose"));
+
+        roses.sort((a,b) => {
+
+            const priceA =
+                parseInt(
+                    a.querySelector("p").innerText
+                    .replace(/\D/g,"")
+                ) || 0;
+
+            const priceB =
+                parseInt(
+                    b.querySelector("p").innerText
+                    .replace(/\D/g,"")
+                ) || 0;
+
+            return order === "low"
+                ? priceA - priceB
+                : priceB - priceA;
+
+        });
+
+        roses.forEach(rose => {
+            grid.appendChild(rose);
+        });
+
+    });
+
+}
+
+
+/* BACK TO TOP */
+
+window.addEventListener("scroll", function(){
+
+    const button =
+        document.getElementById("backTop");
+
+    if(!button) return;
+
+    if(window.scrollY > 400){
+        button.style.display = "block";
+    }else{
+        button.style.display = "none";
+    }
+
+});
+
+
+/* UPDATE COUNT */
+
+window.addEventListener("load", function(){
+    updateRoseCount();
+});
+</script>
 <body>
 
 <!-- NAVBAR -->
