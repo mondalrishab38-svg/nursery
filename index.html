@@ -1841,7 +1841,14 @@ window.addEventListener("load",function(){
 <!-- CONTROLS -->
 <section class="controls">
 
-    w<input
+    <div class="rose-groups">
+    <button onclick="filterRoses('All')">All</button>
+    <button onclick="filterRoses('Dutch')">Dutch</button>
+    <button onclick="filterRoses('D.A')">D.A</button>
+    <button onclick="filterRoses('Fragrant Rose')">Fragrant Rose</button>
+    <button onclick="filterRoses('HT All Type')">HT All Type</button>
+	</div>
+	<input
     type="text"
     id="search"
     placeholder="🔍 Search roses..."
