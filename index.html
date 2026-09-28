@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -975,54 +975,199 @@ body.dark .catalogue-box h2{
 </head>
 <script>
 	
-	/* =========================================
-   ROSE FAVOURITES + SHOPPING CART
-   ========================================= */
+	
+    /* ==========================================
+   RANJIT NURSERY - MAIN JAVASCRIPT
+   ========================================== */
 
 let selectedRoses = JSON.parse(
     localStorage.getItem("selectedRoses") || "[]"
 );
 
 
-/* SAVE CART */
+/* =========================
+   SEARCH
+   ========================= */
 
-function saveSelectedRoses(){
+function searchRose(){
+
+    const input =
+        document.getElementById("search");
+
+    if(!input) return;
+
+    const text =
+        input.value.toLowerCase().trim();
+
+    document.querySelectorAll(".rose").forEach(rose => {
+
+        const name =
+            rose.querySelector("h2")?.innerText.toLowerCase() || "";
+
+        rose.style.display =
+            name.includes(text) ? "" : "none";
+
+    });
+
+    updateRoseCount();
+}
+
+
+/* =========================
+   CATEGORY FILTER
+   ========================= */
+
+function filterRoses(category){
+
+    document.querySelectorAll(".rose").forEach(rose => {
+
+        if(category === "All"){
+            rose.style.display = "";
+            return;
+        }
+
+        const roseCategory =
+            rose.getAttribute("data-category");
+
+        rose.style.display =
+            roseCategory === category ? "" : "none";
+
+    });
+
+    const search =
+        document.getElementById("search");
+
+    if(search){
+        search.value = "";
+    }
+
+    updateRoseCount();
+}
+
+
+/* =========================
+   PRICE FILTER
+   ========================= */
+
+function filterPrice(){
+
+    const filter =
+        document.getElementById("priceFilter");
+
+    if(!filter) return;
+
+    const value = filter.value;
+
+    document.querySelectorAll(".rose").forEach(rose => {
+
+        const priceText =
+            rose.querySelector("p")?.innerText || "";
+
+        const price =
+            parseInt(priceText.replace(/\D/g,"")) || 0;
+
+        let show = true;
+
+        if(value === "100"){
+            show = price <= 100;
+        }
+
+        else if(value === "150"){
+            show = price <= 150;
+        }
+
+        else if(value === "200"){
+            show = price <= 200;
+        }
+
+        else if(value === "300"){
+            show = price <= 300;
+        }
+
+        else if(value === "500"){
+            show = price <= 500;
+        }
+
+        else if(value === "800"){
+            show = price <= 800;
+        }
+
+        rose.style.display = show ? "" : "none";
+
+    });
+
+    updateRoseCount();
+}
+
+
+/* =========================
+   DARK MODE
+   ========================= */
+
+function darkMode(){
+
+    document.body.classList.toggle("dark");
+
+    const enabled =
+        document.body.classList.contains("dark");
 
     localStorage.setItem(
-        "selectedRoses",
-        JSON.stringify(selectedRoses)
+        "darkMode",
+        enabled ? "on" : "off"
     );
 
 }
 
 
-/* ADD ROSE */
+/* REMEMBER DARK MODE */
+
+if(localStorage.getItem("darkMode") === "on"){
+    document.body.classList.add("dark");
+}
+
+
+/* =========================
+   ADD ROSE TO CART
+   ========================= */
 
 function addRose(button){
 
-    const card = button.closest(".rose");
+    const card =
+        button.closest(".rose");
+
+    if(!card) return;
 
     const name =
-        card.querySelector("h2").innerText.trim();
+        card.querySelector("h2")?.innerText.trim();
 
     const priceText =
-        card.querySelector("p").innerText;
+        card.querySelector("p")?.innerText || "";
 
     const price =
         parseInt(priceText.replace(/\D/g,"")) || 0;
 
+    if(!name) return;
+
+
     const existing =
-        selectedRoses.find(rose => rose.name === name);
+        selectedRoses.find(
+            rose => rose.name === name
+        );
+
 
     if(existing){
 
         selectedRoses =
-            selectedRoses.filter(rose => rose.name !== name);
+            selectedRoses.filter(
+                rose => rose.name !== name
+            );
 
         button.innerText = "+";
         button.classList.remove("added");
 
-    }else{
+    }
+
+    else{
 
         selectedRoses.push({
             name:name,
@@ -1035,22 +1180,42 @@ function addRose(button){
 
     }
 
-    saveSelectedRoses();
+
+    saveCart();
     updateCart();
 
 }
 
 
-/* CHANGE QUANTITY */
+/* =========================
+   SAVE CART
+   ========================= */
+
+function saveCart(){
+
+    localStorage.setItem(
+        "selectedRoses",
+        JSON.stringify(selectedRoses)
+    );
+
+}
+
+
+/* =========================
+   CHANGE QUANTITY
+   ========================= */
 
 function changeQuantity(name, amount){
 
     const rose =
-        selectedRoses.find(item => item.name === name);
+        selectedRoses.find(
+            item => item.name === name
+        );
 
     if(!rose) return;
 
     rose.quantity += amount;
+
 
     if(rose.quantity <= 0){
 
@@ -1059,30 +1224,36 @@ function changeQuantity(name, amount){
                 item => item.name !== name
             );
 
-        updateRoseButtons();
-
     }
 
-    saveSelectedRoses();
+
+    saveCart();
+
     updateCart();
+
+    updateRoseButtons();
 
 }
 
 
-/* TOTAL BILL */
+/* =========================
+   TOTAL
+   ========================= */
 
 function getTotalBill(){
 
     return selectedRoses.reduce(
         (total, rose) =>
-            total + (rose.price * rose.quantity),
+            total + rose.price * rose.quantity,
         0
     );
 
 }
 
 
-/* UPDATE SHOPPING LIST */
+/* =========================
+   UPDATE CART
+   ========================= */
 
 function updateCart(){
 
@@ -1091,24 +1262,22 @@ function updateCart(){
 
     if(!cart) return;
 
+
     if(selectedRoses.length === 0){
 
-        cart.innerHTML = `
-            <div class="empty-cart">
-                🌹 No roses selected
-            </div>
-        `;
+        cart.innerHTML =
+            "<div class='empty-cart'>🌹 No roses selected</div>";
 
         return;
+
     }
 
 
-    let html = `
-        <h3>🛒 Your Selected Roses</h3>
-    `;
+    let html =
+        "<h3>🛒 Selected Roses</h3>";
 
 
-    selectedRoses.forEach(rose => {
+    selectedRoses.forEach((rose,index) => {
 
         const subtotal =
             rose.price * rose.quantity;
@@ -1119,7 +1288,9 @@ function updateCart(){
 
             <div class="cart-name">
 
-                <strong>${rose.name}</strong>
+                <strong>
+                    ${rose.name}
+                </strong>
 
                 <small>
                     ₹${rose.price} each
@@ -1129,15 +1300,15 @@ function updateCart(){
 
             <div class="quantity">
 
-                <button
-                    onclick="changeQuantity('${rose.name.replace(/'/g,"\\'")}',-1)">
+                <button onclick="changeQuantityByIndex(${index},-1)">
                     −
                 </button>
 
-                <span>${rose.quantity}</span>
+                <span>
+                    ${rose.quantity}
+                </span>
 
-                <button
-                    onclick="changeQuantity('${rose.name.replace(/'/g,"\\'")}',1)">
+                <button onclick="changeQuantityByIndex(${index},1)">
                     +
                 </button>
 
@@ -1180,45 +1351,81 @@ function updateCart(){
 }
 
 
-/* CLEAR CART */
+/* =========================
+   QUANTITY BY INDEX
+   ========================= */
+
+function changeQuantityByIndex(index,amount){
+
+    if(!selectedRoses[index]) return;
+
+    selectedRoses[index].quantity += amount;
+
+
+    if(selectedRoses[index].quantity <= 0){
+
+        selectedRoses.splice(index,1);
+
+    }
+
+
+    saveCart();
+
+    updateCart();
+
+    updateRoseButtons();
+
+}
+
+
+/* =========================
+   CLEAR CART
+   ========================= */
 
 function clearCart(){
 
     selectedRoses = [];
 
-    saveSelectedRoses();
+    saveCart();
+
+    updateCart();
 
     updateRoseButtons();
-    updateCart();
 
 }
 
 
-/* UPDATE + / ✓ BUTTONS AFTER PAGE RELOAD */
+/* =========================
+   RESTORE + / ✓ BUTTONS
+   ========================= */
 
 function updateRoseButtons(){
 
     document.querySelectorAll(".rose").forEach(card => {
 
         const name =
-            card.querySelector("h2").innerText.trim();
+            card.querySelector("h2")?.innerText.trim();
 
         const button =
             card.querySelector(".add-rose");
 
-        if(!button) return;
+        if(!button || !name) return;
+
 
         const selected =
             selectedRoses.some(
                 rose => rose.name === name
             );
 
+
         if(selected){
 
             button.innerText = "✓";
             button.classList.add("added");
 
-        }else{
+        }
+
+        else{
 
             button.innerText = "+";
             button.classList.remove("added");
@@ -1230,7 +1437,9 @@ function updateRoseButtons(){
 }
 
 
-/* SEND FULL BILL TO WHATSAPP */
+/* =========================
+   WHATSAPP ORDER
+   ========================= */
 
 function sendRosesToWhatsApp(){
 
@@ -1255,17 +1464,16 @@ function sendRosesToWhatsApp(){
         message +=
             `${index + 1}. ${rose.name}\n` +
             `Quantity: ${rose.quantity}\n` +
-            `Price: ₹${rose.price} each\n` +
-            `Subtotal: ₹${subtotal}\n\n`;
+            `₹${rose.price} × ${rose.quantity} = ₹${subtotal}\n\n`;
 
     });
 
 
     message +=
-        "----------------------\n" +
-        `💰 TOTAL: ₹${getTotalBill()}\n` +
-        "----------------------\n\n" +
-        "Please confirm availability and order details.";
+        "━━━━━━━━━━━━━━\n" +
+        `💰 TOTAL BILL: ₹${getTotalBill()}\n` +
+        "━━━━━━━━━━━━━━\n\n" +
+        "Please confirm availability.";
 
 
     const phone =
@@ -1284,165 +1492,161 @@ function sendRosesToWhatsApp(){
 }
 
 
-/* RESTORE EVERYTHING WHEN PAGE OPENS */
+/* =========================
+   ROSE IMAGE VIEWER
+   ========================= */
 
-window.addEventListener("load",function(){
+document.addEventListener("click",function(event){
 
-    updateRoseButtons();
-    updateCart();
+    const image =
+        event.target.closest(".rose img");
 
-});
-	/* ============================= */
-/* EXTRA NURSERY FEATURES */
-/* ============================= */
+    if(!image) return;
+
+    const viewer =
+        document.getElementById("imageViewer");
+
+    const viewerImage =
+        document.getElementById("viewerImage");
+
+    const viewerName =
+        document.getElementById("viewerName");
 
 
-/* ROSE COUNT */
+    if(!viewer || !viewerImage) return;
 
-function updateRoseCount(){
 
-    const roses = document.querySelectorAll(".rose");
-    let visible = 0;
+    viewerImage.src = image.src;
 
-    roses.forEach(rose => {
+    viewerImage.alt = image.alt;
 
-        if(rose.style.display !== "none"){
-            visible++;
-        }
 
-    });
-
-    const count = document.getElementById("roseCount");
-
-    if(count){
-        count.innerHTML = "🌹 " + visible + " rose" +
-            (visible === 1 ? "" : "s") + " showing";
+    if(viewerName){
+        viewerName.innerText = image.alt;
     }
 
-    const noRose = document.getElementById("noRoseFound");
 
-    if(noRose){
-
-        if(visible === 0){
-            noRose.style.display = "block";
-        }else{
-            noRose.style.display = "none";
-        }
-
-    }
-
-}
-
-
-/* IMAGE FULL SCREEN */
-
-document.querySelectorAll(".rose img").forEach(img => {
-
-    img.style.cursor = "zoom-in";
-
-    img.addEventListener("click", function(){
-
-        const viewer =
-            document.getElementById("imageViewer");
-
-        const viewerImage =
-            document.getElementById("viewerImage");
-
-        const viewerName =
-            document.getElementById("viewerName");
-
-        viewerImage.src = this.src;
-
-        viewerImage.alt = this.alt;
-
-        viewerName.textContent = this.alt;
-
-        viewer.classList.add("show");
-
-    });
+    viewer.classList.add("show");
 
 });
 
 
 function closeImageViewer(){
 
-    document
-        .getElementById("imageViewer")
-        .classList.remove("show");
+    const viewer =
+        document.getElementById("imageViewer");
+
+    if(viewer){
+        viewer.classList.remove("show");
+    }
 
 }
 
 
-/* SENIOR / EASY READING MODE */
+/* =========================
+   SENIOR / EASY READING
+   ========================= */
 
 function toggleSeniorMode(){
 
-    document.body.classList.toggle("senior-mode");
+    document.body.classList.toggle(
+        "senior-mode"
+    );
+
 
     const enabled =
-        document.body.classList.contains("senior-mode");
+        document.body.classList.contains(
+            "senior-mode"
+        );
+
 
     localStorage.setItem(
         "seniorMode",
         enabled ? "on" : "off"
     );
 
-    const btn =
-        document.getElementById("seniorBtn");
+}
 
-    if(btn){
 
-        btn.innerHTML =
-            enabled
-            ? "🔤 Normal Reading"
-            : "👓 Easy Reading";
+/* REMEMBER SENIOR MODE */
 
-    }
+if(
+    localStorage.getItem("seniorMode") === "on"
+){
+
+    document.body.classList.add(
+        "senior-mode"
+    );
 
 }
 
 
-/* REMEMBER EASY READING MODE */
+/* =========================
+   ROSE COUNT
+   ========================= */
 
-if(localStorage.getItem("seniorMode") === "on"){
+function updateRoseCount(){
 
-    document.body.classList.add("senior-mode");
+    const counter =
+        document.getElementById("roseCount");
 
-    const btn =
-        document.getElementById("seniorBtn");
+    if(!counter) return;
 
-    if(btn){
-        btn.innerHTML = "🔤 Normal Reading";
-    }
+
+    let count = 0;
+
+
+    document.querySelectorAll(".rose").forEach(rose => {
+
+        if(
+            getComputedStyle(rose).display !== "none"
+        ){
+            count++;
+        }
+
+    });
+
+
+    counter.innerText =
+        "🌹 " +
+        count +
+        " rose" +
+        (count === 1 ? "" : "s") +
+        " showing";
 
 }
 
 
-/* SORT BY PRICE */
+/* =========================
+   SORT BY PRICE
+   ========================= */
 
 function sortRoses(order){
 
-    const grids =
-        document.querySelectorAll(".rose-grid");
-
-    grids.forEach(grid => {
+    document.querySelectorAll(".rose-grid")
+    .forEach(grid => {
 
         const roses =
-            Array.from(grid.querySelectorAll(".rose"));
+            Array.from(
+                grid.querySelectorAll(".rose")
+            );
+
 
         roses.sort((a,b) => {
 
             const priceA =
                 parseInt(
-                    a.querySelector("p").innerText
+                    (a.querySelector("p")?.innerText || "")
                     .replace(/\D/g,"")
                 ) || 0;
 
+
             const priceB =
                 parseInt(
-                    b.querySelector("p").innerText
+                    (b.querySelector("p")?.innerText || "")
                     .replace(/\D/g,"")
                 ) || 0;
+
 
             return order === "low"
                 ? priceA - priceB
@@ -1450,38 +1654,54 @@ function sortRoses(order){
 
         });
 
-        roses.forEach(rose => {
-            grid.appendChild(rose);
-        });
+
+        roses.forEach(rose =>
+            grid.appendChild(rose)
+        );
 
     });
+
+
+    updateRoseCount();
 
 }
 
 
-/* BACK TO TOP */
+/* =========================
+   BACK TO TOP
+   ========================= */
 
-window.addEventListener("scroll", function(){
+window.addEventListener("scroll",function(){
 
     const button =
         document.getElementById("backTop");
 
     if(!button) return;
 
-    if(window.scrollY > 400){
-        button.style.display = "block";
-    }else{
-        button.style.display = "none";
-    }
+
+    button.style.display =
+        window.scrollY > 400
+        ? "block"
+        : "none";
 
 });
 
 
-/* UPDATE COUNT */
+/* =========================
+   PAGE START
+   ========================= */
 
-window.addEventListener("load", function(){
+window.addEventListener("load",function(){
+
+    updateRoseButtons();
+
+    updateCart();
+
     updateRoseCount();
+
 });
+
+
 </script>
 <body>
 
