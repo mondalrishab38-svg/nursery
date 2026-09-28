@@ -1841,42 +1841,23 @@ window.addEventListener("load",function(){
 <!-- CONTROLS -->
 <section class="controls">
 
-    <input
-        id="search"
-        class="search-box"
-        type="text"
-        placeholder="Search a rose..."
-        oninput="searchRose()"
-    >
+    w<input
+    type="text"
+    id="search"
+    placeholder="🔍 Search roses..."
+    oninput="searchRose()"
+>
 
-    <div class="filters">
+<select id="priceFilter" onchange="filterPrice()">
+    <option value="">💰 All Prices</option>
+    <option value="100">Up to ₹100</option>
+    <option value="150">Up to ₹150</option>
+    <option value="200">Up to ₹200</option>
+    <option value="300">Up to ₹300</option>
+    <option value="500">Up to ₹500</option>
+    <option value="800">Up to ₹800</option>
+</select>
 
-        <button class="filter-btn active" onclick="filterCategory('all',this)">
-            All
-        </button>
-
-        <button class="filter-btn" onclick="filterCategory('dutch',this)">
-            Dutch
-        </button>
-
-        <button class="filter-btn" onclick="filterCategory('da',this)">
-            D.A
-        </button>
-
-        <button class="filter-btn" onclick="filterCategory('fragrant',this)">
-            Fragrant Rose
-        </button>
-
-        <button class="filter-btn" onclick="filterCategory('ht',this)">
-            HT All Type
-        </button>
-
-        <select id="priceFilter" class="price-select" onchange="applyFilters()">
-            <option value="all">All Prices</option>
-            <option value="100">₹100 – ₹199</option>
-            <option value="200">₹200 – ₹299</option>
-            <option value="300">₹300 – ₹499</option>
-            <option value="500">₹500+</option>
         </select>
 
         <button class="filter-btn" onclick="openCatalogueMode()">
